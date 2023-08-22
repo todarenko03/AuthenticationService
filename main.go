@@ -16,7 +16,7 @@ import (
 )
 
 const (
-	refreshTokenTimeLimit = 1024 * time.Hour
+	refreshTokenTimeLimit = 24 * time.Hour
 )
 
 type AccessTokenClaims struct {
@@ -102,12 +102,6 @@ func refreshRoute(w http.ResponseWriter, r *http.Request) {
 	refreshToken := r.PostFormValue("authorization")
 	user := r.PostFormValue("user_id")
 
-	// refreshTokenHash, err := hashToken(refreshToken)
-
-	// if err != nil {
-	// 	http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-	// 	return
-	// }
 	var storedRefreshToken RefreshToken
 	err := collection.Find(bson.M{"user_id": user}).One(&storedRefreshToken)
 	if err != nil {
